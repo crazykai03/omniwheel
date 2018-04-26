@@ -75,9 +75,7 @@ namespace omni_3wheels {
 
 
 
-        //serial.writeValue("R_F", right_wheel_force);
-        //serial.writeValue("L_F", left_wheel_force);
-        //serial.writeValue("B_F", back_wheel_force);
+
 
         //serial.writeValue("R_F", right_wheel_force);
         //serial.writeValue("L_F", left_wheel_force);
@@ -87,31 +85,38 @@ namespace omni_3wheels {
 
 
         if (right_wheel_force >= 0) {
+
             pins.analogWritePin(AnalogPin.P16, pins.map(right_wheel_force, 0, 31, 0, 1023))
             pins.digitalWritePin(DigitalPin.P0, 0)
-
         }
         else {
-
             pins.analogWritePin(AnalogPin.P0, pins.map(right_wheel_force, 0, -31, 0, 1023))
             pins.digitalWritePin(DigitalPin.P16, 0)
+
+
         }
         if (left_wheel_force >= 0) {
             pins.analogWritePin(AnalogPin.P12, pins.map(left_wheel_force, 0, 31, 0, 1023))
             pins.digitalWritePin(DigitalPin.P8, 0)
         }
         else {
+
+
             pins.analogWritePin(AnalogPin.P8, pins.map(left_wheel_force, 0, -31, 0, 1023))
             pins.digitalWritePin(DigitalPin.P12, 0)
+
         }
 
         if (back_wheel_force >= 0) {
+
+
             pins.analogWritePin(AnalogPin.P1, pins.map(back_wheel_force, 0, 31, 0, 1023))
             pins.digitalWritePin(DigitalPin.P2, 0)
         }
         else {
             pins.analogWritePin(AnalogPin.P2, pins.map(back_wheel_force, 0, -31, 0, 1023))
             pins.digitalWritePin(DigitalPin.P1, 0)
+
         }
 
     }
