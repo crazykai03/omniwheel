@@ -29,35 +29,12 @@ namespace omni_3wheels {
      * @param e describe parameter here
      */
 
-    //%block
-    export function data_recieve(receive: number) {
-        lsb = receive / 100000;
-        x = lsb;
-        y = (receive - (x * 100000)) / 100
-        last_two_digital = (receive - (x * 100000)) - (y * 100);
 
-        if (last_two_digital >= 10) {
-            red_btn = 1;
-            green_btn = last_two_digital - 10;
-
-
-        } else {
-            red_btn = 0;
-            green_btn = last_two_digital;
-
-
-        }
-
-
-
-
-
-    }
     //% block
     export function omni_3wheels(x: number, y: number, red_btn: number, green_btn: number): void {
         // Add code here
-        x = x - 50;
-        y = y - 50;
+        //x = x - 50;
+        //y = y - 50;
         rotate = 0;
         if (red_btn == 1)
             rotate = 50
@@ -71,20 +48,54 @@ namespace omni_3wheels {
         right_wheel_force = right_force(x, y, rotate);
         left_wheel_force = left_force(x, y, rotate);
         back_wheel_force = back_force(x, y, rotate);
+        motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
+
+
+
+
+    }
+    //%block
+    export function circle_move(radius: number): void {
+
+        let sin_table = [872, 1736, 2588, 3420, 4226, 5000, 5736, 6428, 7071, 7660, 8191, 8660, 9063, 9397, 9659, 9848, 9962, 10000,
+            9962, 9848, 9659, 9397, 9063, 8660, 8191, 7660, 7071, 6428, 5736, 5000, 4226, 3420, 2588, 1736, 872,
+            -872, -1736, -2588, -3420, -4226, -5000, -5736, -6428, -7071, -7660, -8191, -8660, -9063, -9397, -9659, -9848, -9962, -10000,
+            -9962, -9848, -9659, -9397, -9063, -8660, -8191, -7660, -7071, -6428, -5736, -5000, -4226, -3420, -2588, -1736, -872];
+
+        let cos_table = [9962, 9848, 9659, 9397, 9063, 8660, 8191, 7660, 7071, 6428, 5736, 5000, 4226, 3420, 2588, 1736, 872, 0,
+            -872, -1736, -2588, -3420, -4226, -5000, -5736, -6428, -7071, -7660, -8191, -8660, -9063, -9397, -9659, -9848, -9962,
+            -9962, -9848, -9659, -9397, -9063, -8660, -8191, -7660, -7071, -6428, -5736, -5000, -4226, -3420, -2588, -1736, -872, 0,
+            872, 1736, 2588, 3420, 4226, 5000, 5736, 6428, 7071, 7660, 8191, 8660, 9063, 9397, 9659, 9848, 9962
+        ];
+
+
+        let i = 0;
+        for (i = 0; i < sin_table.length; i++) {
+            x = 50 * cos_table[i] / 10000;
+            y = 50 * sin_table[i] / 10000;
+
+
+
+            right_wheel_force = right_force(x, y, 0);
+            left_wheel_force = left_force(x, y, 0);
+            back_wheel_force = back_force(x, y, 0);
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
+            basic.pause(radius * 50);
+        }
+
+
+
+    }
 
 
 
 
 
 
-        //serial.writeValue("R_F", right_wheel_force);
-        //serial.writeValue("L_F", left_wheel_force);
-        // serial.writeValue("B_F", back_wheel_force);
-        //serial.writeNumber(back_wheel_force)
 
+    export function motor_moving(L_Wheel: number, R_Wheel: number, B_wheel: number) {
 
-
-        if (right_wheel_force >= 0) {
+        if (R_Wheel >= 0) {
 
             pins.analogWritePin(AnalogPin.P16, pins.map(right_wheel_force, 0, 31, 0, 1023))
             pins.digitalWritePin(DigitalPin.P0, 0)
@@ -95,7 +106,7 @@ namespace omni_3wheels {
 
 
         }
-        if (left_wheel_force >= 0) {
+        if (L_Wheel >= 0) {
             pins.analogWritePin(AnalogPin.P12, pins.map(left_wheel_force, 0, 31, 0, 1023))
             pins.digitalWritePin(DigitalPin.P8, 0)
         }
@@ -107,7 +118,7 @@ namespace omni_3wheels {
 
         }
 
-        if (back_wheel_force >= 0) {
+        if (B_wheel >= 0) {
 
 
             pins.analogWritePin(AnalogPin.P1, pins.map(back_wheel_force, 0, 31, 0, 1023))
@@ -118,6 +129,13 @@ namespace omni_3wheels {
             pins.digitalWritePin(DigitalPin.P1, 0)
 
         }
+
+
+
+
+
+
+
 
     }
 
