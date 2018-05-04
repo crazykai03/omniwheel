@@ -9,6 +9,10 @@
 /**
  * Custom blocks
  */
+
+
+
+
 //% weight=100 color=#0fbc11 icon=""
 namespace omni_3wheels {
 
@@ -86,6 +90,96 @@ namespace omni_3wheels {
 
 
     }
+    //%block
+    //%speed.min=0 speed.max=50
+    export function move_forward(speed:number):void{
+       if (speed>=0 && speed<=50)
+        {let x=speed;
+           
+           right_wheel_force = right_force(x, 0, 0);
+           left_wheel_force = left_force(x, 0, 0);
+           back_wheel_force = back_force(x, 0, 0);
+           motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
+           
+        }
+    }
+    //%block
+    //%speed.min=0 speed.max=50
+    export function move_backward(speed:number):void{
+        
+        if (speed >= 0 && speed <= 50) {
+            let x = speed;
+
+            right_wheel_force = right_force(-x,0 , 0);
+            left_wheel_force = left_force(-x, 0, 0);
+            back_wheel_force = back_force(-x, 0, 0);
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
+        }
+}
+    //%block
+    //%speed.min=0 speed.max=50 
+    export function move_right(speed:number):void{
+
+        if (speed >= 0 || speed <= 50) {
+            let x = speed;
+
+            right_wheel_force = right_force(0, y, 0);
+            left_wheel_force = left_force(0, y, 0);
+            back_wheel_force = back_force(0, y, 0);
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
+        }
+
+    }      
+
+    //%block
+    //%speed.min=0 speed.max=50
+    export function move_left(speed: number): void {
+
+        if (speed >= 0 || speed <= 50) {
+            let x = speed;
+
+            right_wheel_force = right_force(0, -y, 0);
+            left_wheel_force = left_force(0, -y, 0);
+            back_wheel_force = back_force(0, -y, 0);
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
+        }
+
+    } 
+    //%block
+    //%angle.min=5 angle.max=355 
+    export function move_for_angle (angle:number,speed:number):void{
+       {
+            let sin_table = [872, 1736, 2588, 3420, 4226, 5000, 5736, 6428, 7071, 7660, 8191, 8660, 9063, 9397, 9659, 9848, 9962, 10000,
+                9962, 9848, 9659, 9397, 9063, 8660, 8191, 7660, 7071, 6428, 5736, 5000, 4226, 3420, 2588, 1736, 872,
+                -872, -1736, -2588, -3420, -4226, -5000, -5736, -6428, -7071, -7660, -8191, -8660, -9063, -9397, -9659, -9848, -9962, -10000,
+                -9962, -9848, -9659, -9397, -9063, -8660, -8191, -7660, -7071, -6428, -5736, -5000, -4226, -3420, -2588, -1736, -872];
+
+            let cos_table = [9962, 9848, 9659, 9397, 9063, 8660, 8191, 7660, 7071, 6428, 5736, 5000, 4226, 3420, 2588, 1736, 872, 0,
+                -872, -1736, -2588, -3420, -4226, -5000, -5736, -6428, -7071, -7660, -8191, -8660, -9063, -9397, -9659, -9848, -9962,
+                -9962, -9848, -9659, -9397, -9063, -8660, -8191, -7660, -7071, -6428, -5736, -5000, -4226, -3420, -2588, -1736, -872, 0,
+                872, 1736, 2588, 3420, 4226, 5000, 5736, 6428, 7071, 7660, 8191, 8660, 9063, 9397, 9659, 9848, 9962
+            ];
+            angle = angle/5;
+            if (speed >= 0 || speed <= 50) {
+            x = speed * angle / 10000;
+            y = speed * angle / 10000;
+            }
+            right_wheel_force = right_force(x, y, 0);
+            left_wheel_force = left_force(x, y, 0);
+            back_wheel_force = back_force(x, y, 0);
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
+
+
+       }
+
+
+
+
+    } 
+
+
+
+    
 
 
 
