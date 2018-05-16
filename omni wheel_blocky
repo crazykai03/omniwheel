@@ -1,0 +1,62 @@
+let green_btn = 0
+let red_btn = 0
+let direction_flag = 0
+let last_two_digital = 0
+let servo_angle = 0
+let lsb = 0
+let distant = 0
+radio.onDataPacketReceived( ({ receivedNumber }) =>  {
+    lsb = receivedNumber / 10000
+    x = lsb
+    y = (receivedNumber - x * 10000) / 100
+    last_two_digital = receivedNumber - x * 10000 - y * 100
+    if (last_two_digital >= 10) {
+        red_btn = 1
+        green_btn = last_two_digital - 10
+    } else {
+        red_btn = 0
+        green_btn = last_two_digital
+    }
+    omni_3wheels.omni_3wheels(
+    x - 50,
+    y - 50,
+    red_btn,
+    green_btn
+    )
+})
+let y = 0
+let x = 0
+radio.setGroup(20)
+servo_angle = 0
+direction_flag = 0
+basic.forever(() => {
+    distant = sonar.ping(
+    DigitalPin.P6,
+    DigitalPin.P5,
+    PingUnit.Centimeters
+    )
+    if (distant < 15 && distant != 0) {
+        omni_3wheels.stop()
+        if (direction_flag == 0) {
+            direction_flag = 1
+            pins.servoWritePin(AnalogPin.P4, 0)
+            basic.pause(500)
+        } else if (direction_flag == 1) {
+            direction_flag = -1
+            pins.servoWritePin(AnalogPin.P4, 180)
+            basic.pause(500)
+        } else if (direction_flag == -1) {
+            direction_flag = 0
+            pins.servoWritePin(AnalogPin.P4, 90)
+            basic.pause(500)
+        }
+    } else {
+        if (direction_flag == 0) {
+            omni_3wheels.move_forward(31)
+        } else if (direction_flag == 1) {
+            omni_3wheels.move_left(29)
+        } else if (direction_flag == -1) {
+            omni_3wheels.move_right(28)
+        }
+    }
+})
