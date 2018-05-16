@@ -1,4 +1,3 @@
-
 /**
  * Use this file to define custom functions and blocks.
  * Read more at https://makecode.microbit.org/blocks/custom
@@ -59,14 +58,15 @@ namespace omni_3wheels {
 
     }
     //%block
-    export function circle_move(radius: number): void {
+    //%starting_angle.min=0 starting_angle.max=355 finish_angle.min=0 finish_angle.max=355 rotate.min=-50 rotate.max=50
+    export function circle_move(radius: number, starting_angle: number, finish_angle: number, rotate: number, clockwise: boolean): void {
 
-        let sin_table = [872, 1736, 2588, 3420, 4226, 5000, 5736, 6428, 7071, 7660, 8191, 8660, 9063, 9397, 9659, 9848, 9962, 10000,
+        let sin_table = [0, 872, 1736, 2588, 3420, 4226, 5000, 5736, 6428, 7071, 7660, 8191, 8660, 9063, 9397, 9659, 9848, 9962, 10000,
             9962, 9848, 9659, 9397, 9063, 8660, 8191, 7660, 7071, 6428, 5736, 5000, 4226, 3420, 2588, 1736, 872,
             -872, -1736, -2588, -3420, -4226, -5000, -5736, -6428, -7071, -7660, -8191, -8660, -9063, -9397, -9659, -9848, -9962, -10000,
-            -9962, -9848, -9659, -9397, -9063, -8660, -8191, -7660, -7071, -6428, -5736, -5000, -4226, -3420, -2588, -1736, -872];
+            -9962, -9848, -9659, -9397, -9063, -8660, -8191, -7660, -7071, -6428, -5736, -5000, -4226, -3420, -2588, -1736, -872, 0];
 
-        let cos_table = [9962, 9848, 9659, 9397, 9063, 8660, 8191, 7660, 7071, 6428, 5736, 5000, 4226, 3420, 2588, 1736, 872, 0,
+        let cos_table = [10000, 9962, 9848, 9659, 9397, 9063, 8660, 8191, 7660, 7071, 6428, 5736, 5000, 4226, 3420, 2588, 1736, 872, 0,
             -872, -1736, -2588, -3420, -4226, -5000, -5736, -6428, -7071, -7660, -8191, -8660, -9063, -9397, -9659, -9848, -9962,
             -9962, -9848, -9659, -9397, -9063, -8660, -8191, -7660, -7071, -6428, -5736, -5000, -4226, -3420, -2588, -1736, -872, 0,
             872, 1736, 2588, 3420, 4226, 5000, 5736, 6428, 7071, 7660, 8191, 8660, 9063, 9397, 9659, 9848, 9962
@@ -74,54 +74,142 @@ namespace omni_3wheels {
 
 
         let i = 0;
-        for (i = 0; i < sin_table.length; i++) {
-            x = 50 * cos_table[i] / 10000;
-            y = 50 * sin_table[i] / 10000;
+        let j = 0;
+        starting_angle = starting_angle / 5
+        finish_angle = finish_angle / 5
+        if (clockwise == false) {
+            for (i = starting_angle; i < finish_angle; i++) {
+                x = 50 * sin_table[i] / 10000;
+                y = 50 * cos_table[i] / 10000;
 
 
 
-            right_wheel_force = right_force(x, y, 0);
-            left_wheel_force = left_force(x, y, 0);
-            back_wheel_force = back_force(x, y, 0);
-            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
-            basic.pause(radius * 50);
+                right_wheel_force = right_force(x, y, rotate);
+                left_wheel_force = left_force(x, y, rotate);
+                back_wheel_force = back_force(x, y, rotate);
+                motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
+                basic.pause(radius * 10);
+            }
+        } else {
+            if (starting_angle - finish_angle < 0) {
+                for (i = starting_angle; i > 0; i--) {
+                    x = 50 * sin_table[i] / 10000;
+                    y = 50 * cos_table[i] / 10000;
+
+
+
+                    right_wheel_force = right_force(x, y, rotate);
+                    left_wheel_force = left_force(x, y, rotate);
+                    back_wheel_force = back_force(x, y, rotate);
+                    motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
+                    basic.pause(radius * 10);
+
+                }
+                for (j = sin_table.length; i > finish_angle; i--) {
+                    x = 50 * sin_table[i] / 10000;
+                    y = 50 * cos_table[i] / 10000;
+
+
+
+                    right_wheel_force = right_force(x, y, rotate);
+                    left_wheel_force = left_force(x, y, rotate);
+                    back_wheel_force = back_force(x, y, rotate);
+                    motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
+                    basic.pause(radius * 10);
+
+
+                }
+            }
+            else {
+                for (i = starting_angle; i > finish_angle; i--) {
+                    x = 50 * sin_table[i] / 10000;
+                    y = 50 * cos_table[i] / 10000;
+
+
+
+                    right_wheel_force = right_force(x, y, rotate);
+                    left_wheel_force = left_force(x, y, rotate);
+                    back_wheel_force = back_force(x, y, rotate);
+                    motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
+                    basic.pause(radius * 10);
+
+
+
+                }
+
+
+            }
+
+
         }
 
 
 
     }
+
     //%block
-    //%speed.min=0 speed.max=50
-    export function move_forward(speed:number):void{
-       if (speed>=0 && speed<=50)
-        {let x=speed;
-           
-           right_wheel_force = right_force(x, 0, 0);
-           left_wheel_force = left_force(x, 0, 0);
-           back_wheel_force = back_force(x, 0, 0);
-           motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
-           
-        }
-    }
-    //%block
-    //%speed.min=0 speed.max=50
-    export function move_backward(speed:number):void{
+    export function stop() {
+        right_wheel_force = right_force(0, 0, 0);
+        left_wheel_force = left_force(0, 0, 0);
+        back_wheel_force = back_force(0, 0, 0);
+        motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
         
+    }
+    //%block
+    //%speed.min=0 speed.max=90
+    export function rotate_from_center(speed: number, clockwise: boolean): void {
+        if (clockwise == true) {
+
+            right_wheel_force = right_force(0, 0, speed);
+            left_wheel_force = left_force(0, 0, speed);
+            back_wheel_force = back_force(0, 0, speed);
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
+
+        } else {
+
+            right_wheel_force = right_force(0, 0, -speed);
+            left_wheel_force = left_force(0, 0, -speed);
+            back_wheel_force = back_force(0, 0, -speed);
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
+
+        }
+
+
+
+
+    }
+    //%block
+    //%speed.min=0 speed.max=50
+    export function move_forward(speed: number): void {
         if (speed >= 0 && speed <= 50) {
             let x = speed;
 
-            right_wheel_force = right_force(-x,0 , 0);
+            right_wheel_force = right_force(x, 0, 0);
+            left_wheel_force = left_force(x, 0, 0);
+            back_wheel_force = back_force(x, 0, 0);
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
+
+        }
+    }
+    //%block
+    //%speed.min=0 speed.max=50
+    export function move_backward(speed: number): void {
+
+        if (speed >= 0 && speed <= 50) {
+            let x = speed;
+
+            right_wheel_force = right_force(-x, 0, 0);
             left_wheel_force = left_force(-x, 0, 0);
             back_wheel_force = back_force(-x, 0, 0);
             motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
         }
-}
+    }
     //%block
     //%speed.min=0 speed.max=50 
-    export function move_right(speed:number):void{
+    export function move_right(speed: number): void {
 
         if (speed >= 0 || speed <= 50) {
-            let x = speed;
+            let y = speed;
 
             right_wheel_force = right_force(0, y, 0);
             left_wheel_force = left_force(0, y, 0);
@@ -129,14 +217,14 @@ namespace omni_3wheels {
             motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
         }
 
-    }      
+    }
 
     //%block
     //%speed.min=0 speed.max=50
     export function move_left(speed: number): void {
 
         if (speed >= 0 || speed <= 50) {
-            let x = speed;
+            let y = speed;
 
             right_wheel_force = right_force(0, -y, 0);
             left_wheel_force = left_force(0, -y, 0);
@@ -144,11 +232,11 @@ namespace omni_3wheels {
             motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
         }
 
-    } 
+    }
     //%block
     //%angle.min=5 angle.max=355 
-    export function move_for_angle (angle:number,speed:number):void{
-       {
+    export function move_for_angle(angle: number, speed: number): void {
+        {
             let sin_table = [872, 1736, 2588, 3420, 4226, 5000, 5736, 6428, 7071, 7660, 8191, 8660, 9063, 9397, 9659, 9848, 9962, 10000,
                 9962, 9848, 9659, 9397, 9063, 8660, 8191, 7660, 7071, 6428, 5736, 5000, 4226, 3420, 2588, 1736, 872,
                 -872, -1736, -2588, -3420, -4226, -5000, -5736, -6428, -7071, -7660, -8191, -8660, -9063, -9397, -9659, -9848, -9962, -10000,
@@ -159,10 +247,10 @@ namespace omni_3wheels {
                 -9962, -9848, -9659, -9397, -9063, -8660, -8191, -7660, -7071, -6428, -5736, -5000, -4226, -3420, -2588, -1736, -872, 0,
                 872, 1736, 2588, 3420, 4226, 5000, 5736, 6428, 7071, 7660, 8191, 8660, 9063, 9397, 9659, 9848, 9962
             ];
-            angle = angle/5;
+            angle = angle / 5;
             if (speed >= 0 || speed <= 50) {
-            x = speed * angle / 10000;
-            y = speed * angle / 10000;
+                x = speed * sin_table[angle] / 10000;
+                y = speed * cos_table[angle] / 10000;
             }
             right_wheel_force = right_force(x, y, 0);
             left_wheel_force = left_force(x, y, 0);
@@ -170,16 +258,16 @@ namespace omni_3wheels {
             motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
 
 
-       }
+        }
 
 
 
 
-    } 
+    }
 
 
 
-    
+
 
 
 
