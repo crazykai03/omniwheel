@@ -91,57 +91,25 @@ namespace omni_3wheels {
                 basic.pause(radius * 10);
             }
         } else {
-            if (starting_angle - finish_angle < 0) {
-                for (i = starting_angle; i > 0; i--) {
-                    x = 50 * sin_table[i] / 10000;
-                    y = 50 * cos_table[i] / 10000;
 
 
-
-                    right_wheel_force = right_force(x, y, rotate);
-                    left_wheel_force = left_force(x, y, rotate);
-                    back_wheel_force = back_force(x, y, rotate);
-                    motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
-                    basic.pause(radius * 10);
-
-                }
-                for (j = sin_table.length; i > finish_angle; i--) {
-                    x = 50 * sin_table[i] / 10000;
-                    y = 50 * cos_table[i] / 10000;
-
-
-
-                    right_wheel_force = right_force(x, y, rotate);
-                    left_wheel_force = left_force(x, y, rotate);
-                    back_wheel_force = back_force(x, y, rotate);
-                    motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
-                    basic.pause(radius * 10);
-
-
-                }
+            for (i = starting_angle; i > finish_angle; i--) {
+                x = 50 * sin_table[i] / 10000;
+                y = 50 * cos_table[i] / 10000;
             }
-            else {
-                for (i = starting_angle; i > finish_angle; i--) {
-                    x = 50 * sin_table[i] / 10000;
-                    y = 50 * cos_table[i] / 10000;
 
 
-
-                    right_wheel_force = right_force(x, y, rotate);
-                    left_wheel_force = left_force(x, y, rotate);
-                    back_wheel_force = back_force(x, y, rotate);
-                    motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
-                    basic.pause(radius * 10);
-
-
-
-                }
-
-
-            }
+            right_wheel_force = right_force(x, y, rotate);
+            left_wheel_force = left_force(x, y, rotate);
+            back_wheel_force = back_force(x, y, rotate);
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
+            basic.pause(radius * 10);
 
 
         }
+
+
+
 
 
 
@@ -153,7 +121,7 @@ namespace omni_3wheels {
         left_wheel_force = left_force(0, 0, 0);
         back_wheel_force = back_force(0, 0, 0);
         motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
-        
+
     }
     //%block
     //%speed.min=0 speed.max=90
