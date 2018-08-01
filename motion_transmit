@@ -15,7 +15,7 @@ basic.forever(() => {
         y = -50
     }
     x = x * -1
-    serial.writeValue("x", x)
-    serial.writeValue("y", y)
+    radio.sendValue("x", x)
+    radio.sendValue("y", y)
     basic.pause(200)
 })
