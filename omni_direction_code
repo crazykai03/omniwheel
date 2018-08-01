@@ -247,24 +247,24 @@ namespace omni_3wheels {
 
         if (R_Wheel >= 0) {
 
-            pins.analogWritePin(AnalogPin.P16, pins.map(right_wheel_force, 0, 31, 0, 1023))
-            pins.digitalWritePin(DigitalPin.P0, 0)
+            pins.analogWritePin(AnalogPin.P12, pins.map(right_wheel_force, 0, 31, 0, 1023))
+            pins.digitalWritePin(DigitalPin.P8, 0)
         }
         else {
-            pins.analogWritePin(AnalogPin.P0, pins.map(right_wheel_force, 0, -31, 0, 1023))
-            pins.digitalWritePin(DigitalPin.P16, 0)
+            pins.analogWritePin(AnalogPin.P8, pins.map(right_wheel_force, 0, -31, 0, 1023))
+            pins.digitalWritePin(DigitalPin.P12, 0)
 
 
         }
         if (L_Wheel >= 0) {
-            pins.analogWritePin(AnalogPin.P12, pins.map(left_wheel_force, 0, 31, 0, 1023))
-            pins.digitalWritePin(DigitalPin.P8, 0)
+            pins.analogWritePin(AnalogPin.P16, pins.map(left_wheel_force, 0, 31, 0, 1023))
+            pins.digitalWritePin(DigitalPin.P0, 0)
         }
         else {
 
 
-            pins.analogWritePin(AnalogPin.P8, pins.map(left_wheel_force, 0, -31, 0, 1023))
-            pins.digitalWritePin(DigitalPin.P12, 0)
+            pins.analogWritePin(AnalogPin.P0, pins.map(left_wheel_force, 0, -31, 0, 1023))
+            pins.digitalWritePin(DigitalPin.P16, 0)
 
         }
 
