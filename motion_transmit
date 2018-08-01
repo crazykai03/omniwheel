@@ -1,0 +1,21 @@
+let y = 0
+let x = 0
+radio.setGroup(20)
+basic.forever(() => {
+    x = input.rotation(Rotation.Pitch)
+    y = input.rotation(Rotation.Roll)
+    if (x >= 50) {
+        x = 50
+    } else if (x <= -50) {
+        x = -50
+    }
+    if (y >= 50) {
+        y = 50
+    } else if (y <= -50) {
+        y = -50
+    }
+    x = x * -1
+    serial.writeValue("x", x)
+    serial.writeValue("y", y)
+    basic.pause(200)
+})
