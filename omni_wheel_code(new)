@@ -1,10 +1,13 @@
 let green_btn = 0
-let red_btn = 0
 let direction_flag = 0
-let distant = 0
+let red_btn = 0
 let y = 0
 let x = 0
-let value = 0
+let distant = 0
+function rotation()  {
+    omni_3wheels.rotate_from_center(49, false)
+    basic.pause(1000)
+}
 radio.onDataPacketReceived( ({ receivedString: name, receivedNumber: value }) =>  {
     if (name == "x") {
         x = value
@@ -25,11 +28,36 @@ radio.onDataPacketReceived( ({ receivedString: name, receivedNumber: value }) =>
     green_btn
     )
 })
-function rotation()  {
-    omni_3wheels.rotate_from_center(49, false)
-    basic.pause(1000)
-}
 radio.setGroup(20)
 basic.forever(() => {
-	
+    distant = sonar.ping(
+    DigitalPin.P6,
+    DigitalPin.P5,
+    PingUnit.Centimeters
+    )
+    if (distant < 20 && distant != 0) {
+        omni_3wheels.stop()
+        if (direction_flag == 0) {
+            direction_flag = 1
+            pins.servoWritePin(AnalogPin.P4, 0)
+            basic.pause(850)
+        } else if (direction_flag == 1) {
+            direction_flag = -1
+            pins.servoWritePin(AnalogPin.P4, 180)
+            basic.pause(850)
+        } else if (direction_flag == -1) {
+            direction_flag = 0
+            pins.servoWritePin(AnalogPin.P4, 90)
+            basic.pause(850)
+            rotation()
+        }
+    } else {
+        if (direction_flag == 0) {
+            omni_3wheels.move_forward(45)
+        } else if (direction_flag == 1) {
+            omni_3wheels.move_right(45)
+        } else if (direction_flag == -1) {
+            omni_3wheels.move_left(45)
+        }
+    }
 })
