@@ -14,7 +14,10 @@
 
 //% weight=100 color=#0fbc11 icon=""
 namespace omni_3wheels {
-
+        // old board pin1pin2 =>> pin 12pin8
+        //old board pin13pin14 =>pin16pin0
+        //servo pin =>pin4
+        //ultra trig=pin6 echo=>pin5
     let left_wheel_force = 0;
     let right_wheel_force = 0;
     let back_wheel_force = 0;
