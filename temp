@@ -52,7 +52,7 @@ namespace omni_3wheels {
             rotate = -50
         else if (red_btn & green_btn)
             rotate = 0;
-       
+
         //serial.writeValue("rotate = ", rotate)
         right_wheel_force = right_force(x, y, rotate);
         left_wheel_force = left_force(x, y, rotate);
@@ -122,11 +122,21 @@ namespace omni_3wheels {
     }
 
     //%block
-    export function four_omniwheel_car(x: number, y: number, rotate: number): void {
+    export function four_omniwheel_car(x: number, y: number, red_btn: number, green_btn: number): void {
+        rotate = 0;
+        if (red_btn == 1)
+            rotate = 50
+        else if (green_btn == 1)
+            rotate = -50
+        else if (red_btn & green_btn)
+            rotate = 0;
+
+        //serial.writeValue("x ", x)
         omni4_right_front = front_right_force(x, y, rotate);
         omni4_left_front = front_left_force(x, y, rotate);
         omni4_right_back = back_right_force(x, y, rotate);
         omni4_left_back = back_left_force(x, y, rotate);
+
 
         four_omni_rotation(omni4_right_front, omni4_left_front, omni4_left_back, omni4_right_back)
 
@@ -297,43 +307,45 @@ namespace omni_3wheels {
 
 
     }
-    export function four_omni_rotation(F_RWheel: number, F_LWheel: number, B_Lwheel: number, B_Rwheel: number) {
-        if (F_RWheel >= 0) {
-
-            motor.MotorRun(motor.Motors.M1, motor.Dir.CCW, pins.map(F_RWheel, 0, 35, 0, 255))
+    export function four_omni_rotation(F_Rwheel: number, F_Lwheel: number, B_Lwheel: number, B_Rwheel: number) {
+        if (F_Rwheel >= 0) {
+            F_Rwheel = Math.min(F_Rwheel, 40)
+            motor.MotorRun(motor.Motors.M2, motor.Dir.CW, pins.map(F_Rwheel, 0, 40, 0, 255))
         }
         else {
-            motor.MotorRun(motor.Motors.M1, motor.Dir.CW, pins.map(F_RWheel, 0, -35, 0, 255))
+            F_Rwheel = Math.max(F_Rwheel, -40)
+            motor.MotorRun(motor.Motors.M2, motor.Dir.CCW, pins.map(F_Rwheel, 0, -40, 0, 255))
 
         }
-        if (F_LWheel >= 0) {
-            motor.MotorRun(motor.Motors.M2, motor.Dir.CCW, pins.map(F_LWheel, 0, 35, 0, 255))
+        if (F_Lwheel >= 0) {
+            F_Lwheel = Math.min(F_Lwheel, 40)
+            motor.MotorRun(motor.Motors.M3, motor.Dir.CW, pins.map(F_Lwheel, 0, 40, 0, 255))
         }
         else {
 
-
-            motor.MotorRun(motor.Motors.M2, motor.Dir.CW, pins.map(F_LWheel, 0, -35, 0, 255))
+            F_Lwheel = Math.max(F_Lwheel, -40)
+            motor.MotorRun(motor.Motors.M3, motor.Dir.CCW, pins.map(F_Lwheel, 0, -40, 0, 255))
         }
 
         if (B_Lwheel >= 0) {
 
-
-            motor.MotorRun(motor.Motors.M3, motor.Dir.CCW, pins.map(B_Lwheel, 0, 35, 0, 255))
+            B_Lwheel = Math.min(B_Lwheel, 40)
+            motor.MotorRun(motor.Motors.M4, motor.Dir.CW, pins.map(B_Lwheel, 0, 40, 0, 255))
         }
         else {
-
-            motor.MotorRun(motor.Motors.M3, motor.Dir.CW, pins.map(B_Lwheel, 0, -35, 0, 255))
+            B_Lwheel = Math.max(B_Lwheel, -40)
+            motor.MotorRun(motor.Motors.M4, motor.Dir.CCW, pins.map(B_Lwheel, 0, -40, 0, 255))
 
 
         }
         if (B_Rwheel >= 0) {
 
-
-            motor.MotorRun(motor.Motors.M4, motor.Dir.CCW, pins.map(B_Rwheel, 0, 35, 0, 255))
+            B_Rwheel = Math.min(B_Rwheel, 40)
+            motor.MotorRun(motor.Motors.M1, motor.Dir.CW, pins.map(B_Rwheel, 0, 40, 0, 255))
         }
         else {
-
-            motor.MotorRun(motor.Motors.M4, motor.Dir.CW, pins.map(B_Rwheel, 0, -35, 0, 255))
+            B_Rwheel = Math.max(B_Rwheel, -40)
+            motor.MotorRun(motor.Motors.M1, motor.Dir.CCW, pins.map(B_Rwheel, 0, -40, 0, 255))
 
 
         }
@@ -424,38 +436,38 @@ namespace omni_3wheels {
 
 
 
-    export function front_left_force(X: number, y: number, rotate: number): number {
+    export function front_left_force(x: number, y: number, rotate: number): number {
 
         let temp: number;
-        temp = -x * 4 / 10 - y * 4 / 10 + rotate * 1 / 4;
+        temp = -x * 80 / 100 - y * 80 / 100 + rotate * 35 / 100;
 
 
         return temp;
 
     }
-    export function front_right_force(X: number, y: number, rotate: number): number {
+    export function front_right_force(x: number, y: number, rotate: number): number {
 
         let temp: number;
 
-        temp = x * 4 / 10 - y * 4 / 10 + rotate * 1 / 4;
+        temp = x * 80 / 100 - y * 80 / 100 + rotate * 35 / 100;
 
 
         return temp;
     }
-    export function back_left_force(X: number, y: number, rotate: number): number {
+    export function back_left_force(x: number, y: number, rotate: number): number {
 
         let temp: number;
 
-        temp = -x * 4 / 10 + y * 4 / 10 + rotate * 1 / 4;
+        temp = -x * 80 / 100 + y * 80 / 100 + rotate *35 / 100;
 
 
         return temp;
     }
-    export function back_right_force(X: number, y: number, rotate: number): number {
+    export function back_right_force(x: number, y: number, rotate: number): number {
 
         let temp: number;
 
-        temp = x * 4 / 10 + y * 4 / 10 + rotate * 1 / 4;
+        temp = x * 80 / 100 + y * 80 / 100 + rotate * 35 / 100;
 
 
         return temp;
