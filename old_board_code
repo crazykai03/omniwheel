@@ -57,8 +57,8 @@ namespace omni_3wheels {
         right_wheel_force = right_force(x, y, rotate);
         left_wheel_force = left_force(x, y, rotate);
         back_wheel_force = back_force(x, y, rotate);
-        //motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
-        motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
+        motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
+       // motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
 
 
 
@@ -93,7 +93,7 @@ namespace omni_3wheels {
                 right_wheel_force = right_force(x, y, rotate);
                 left_wheel_force = left_force(x, y, rotate);
                 back_wheel_force = back_force(x, y, rotate);
-                motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
+                motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
                 basic.pause(radius * 10);
             }
         } else {
@@ -108,7 +108,7 @@ namespace omni_3wheels {
             right_wheel_force = right_force(x, y, rotate);
             left_wheel_force = left_force(x, y, rotate);
             back_wheel_force = back_force(x, y, rotate);
-            motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
             basic.pause(radius * 10);
 
 
@@ -151,8 +151,7 @@ namespace omni_3wheels {
         right_wheel_force = right_force(0, 0, 0);
         left_wheel_force = left_force(0, 0, 0);
         back_wheel_force = back_force(0, 0, 0);
-        motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
-
+        motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
     }
     //%block
     //%speed.min=0 speed.max=90
@@ -162,14 +161,13 @@ namespace omni_3wheels {
             right_wheel_force = right_force(0, 0, speed);
             left_wheel_force = left_force(0, 0, speed);
             back_wheel_force = back_force(0, 0, speed);
-            motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
-
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
         } else {
 
             right_wheel_force = right_force(0, 0, -speed);
             left_wheel_force = left_force(0, 0, -speed);
             back_wheel_force = back_force(0, 0, -speed);
-            motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
 
         }
 
@@ -186,8 +184,7 @@ namespace omni_3wheels {
             right_wheel_force = right_force(x, 0, 0);
             left_wheel_force = left_force(x, 0, 0);
             back_wheel_force = back_force(x, 0, 0);
-            motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
-
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
         }
     }
     //%block
@@ -200,7 +197,7 @@ namespace omni_3wheels {
             right_wheel_force = right_force(-x, 0, 0);
             left_wheel_force = left_force(-x, 0, 0);
             back_wheel_force = back_force(-x, 0, 0);
-            motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
         }
     }
     //%block
@@ -213,7 +210,7 @@ namespace omni_3wheels {
             right_wheel_force = right_force(0, y, 0);
             left_wheel_force = left_force(0, y, 0);
             back_wheel_force = back_force(0, y, 0);
-            motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
         }
 
     }
@@ -228,7 +225,7 @@ namespace omni_3wheels {
             right_wheel_force = right_force(0, -y, 0);
             left_wheel_force = left_force(0, -y, 0);
             back_wheel_force = back_force(0, -y, 0);
-            motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
         }
 
     }
@@ -254,7 +251,7 @@ namespace omni_3wheels {
             right_wheel_force = right_force(x, y, 0);
             left_wheel_force = left_force(x, y, 0);
             back_wheel_force = back_force(x, y, 0);
-            motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
 
 
         }
