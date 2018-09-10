@@ -14,10 +14,10 @@
 
 //% weight=100 color=#0fbc11 icon=""
 namespace omni_3wheels {
-        // old board pin1pin2 =>> pin 12pin8
-        //old board pin13pin14 =>pin16pin0
-        //servo pin =>pin4
-        //ultra trig=pin6 echo=>pin5
+    // old board pin1pin2 =>> pin 12pin8
+    //old board pin13pin14 =>pin16pin0
+    //servo pin =>pin4
+    //ultra trig=pin6 echo=>pin5
     let left_wheel_force = 0;
     let right_wheel_force = 0;
     let back_wheel_force = 0;
@@ -26,6 +26,10 @@ namespace omni_3wheels {
     let last_two_digital = 0;
     let red_btn = 0;
     let green_btn = 0;
+    let omni4_right_front = 0;
+    let omni4_left_front = 0;
+    let omni4_right_back = 0;
+    let omni4_left_back = 0;
 
 
     /**
@@ -37,25 +41,18 @@ namespace omni_3wheels {
 
 
     //% block
-    export function omni_3wheels(x: number, y: number, red_btn: number, green_btn: number): void {
+    export function omni_3wheels(x: number, y: number, rotate: number): void {
         // Add code here
         //x = x - 50;
         //y = y - 50;
-        rotate = 0;
-        if (red_btn == 1)
-            rotate = 50
-        else if (green_btn == 1)
-            rotate = -50
-        else if (red_btn & green_btn)
-            rotate = 0;
-        //serial.writeValue("x=", x)
-        //serial.writeValue("y=", y)
+     
+
         //serial.writeValue("rotate = ", rotate)
         right_wheel_force = right_force(x, y, rotate);
         left_wheel_force = left_force(x, y, rotate);
         back_wheel_force = back_force(x, y, rotate);
-        //motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
-        motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
+        motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
+        // motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
 
 
 
@@ -90,7 +87,7 @@ namespace omni_3wheels {
                 right_wheel_force = right_force(x, y, rotate);
                 left_wheel_force = left_force(x, y, rotate);
                 back_wheel_force = back_force(x, y, rotate);
-                motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
+                motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
                 basic.pause(radius * 10);
             }
         } else {
@@ -105,7 +102,7 @@ namespace omni_3wheels {
             right_wheel_force = right_force(x, y, rotate);
             left_wheel_force = left_force(x, y, rotate);
             back_wheel_force = back_force(x, y, rotate);
-            motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
             basic.pause(radius * 10);
 
 
@@ -119,12 +116,31 @@ namespace omni_3wheels {
     }
 
     //%block
+    export function four_omniwheel_car(x: number, y: number, rotate: number): void {
+        
+      
+
+        //serial.writeValue("x ", x)
+        omni4_right_front = front_right_force(x, y, rotate);
+        omni4_left_front = front_left_force(x, y, rotate);
+        omni4_right_back = back_right_force(x, y, rotate);
+        omni4_left_back = back_left_force(x, y, rotate);
+
+
+        four_omni_rotation(omni4_right_front, omni4_left_front, omni4_left_back, omni4_right_back)
+
+
+
+
+
+    }
+
+    //%block
     export function stop() {
         right_wheel_force = right_force(0, 0, 0);
         left_wheel_force = left_force(0, 0, 0);
         back_wheel_force = back_force(0, 0, 0);
-        motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
-
+        motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
     }
     //%block
     //%speed.min=0 speed.max=90
@@ -134,14 +150,13 @@ namespace omni_3wheels {
             right_wheel_force = right_force(0, 0, speed);
             left_wheel_force = left_force(0, 0, speed);
             back_wheel_force = back_force(0, 0, speed);
-            motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
-
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
         } else {
 
             right_wheel_force = right_force(0, 0, -speed);
             left_wheel_force = left_force(0, 0, -speed);
             back_wheel_force = back_force(0, 0, -speed);
-            motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
 
         }
 
@@ -158,8 +173,7 @@ namespace omni_3wheels {
             right_wheel_force = right_force(x, 0, 0);
             left_wheel_force = left_force(x, 0, 0);
             back_wheel_force = back_force(x, 0, 0);
-            motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
-
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
         }
     }
     //%block
@@ -172,7 +186,7 @@ namespace omni_3wheels {
             right_wheel_force = right_force(-x, 0, 0);
             left_wheel_force = left_force(-x, 0, 0);
             back_wheel_force = back_force(-x, 0, 0);
-            motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
         }
     }
     //%block
@@ -185,7 +199,7 @@ namespace omni_3wheels {
             right_wheel_force = right_force(0, y, 0);
             left_wheel_force = left_force(0, y, 0);
             back_wheel_force = back_force(0, y, 0);
-            motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
         }
 
     }
@@ -200,7 +214,7 @@ namespace omni_3wheels {
             right_wheel_force = right_force(0, -y, 0);
             left_wheel_force = left_force(0, -y, 0);
             back_wheel_force = back_force(0, -y, 0);
-            motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
         }
 
     }
@@ -226,7 +240,7 @@ namespace omni_3wheels {
             right_wheel_force = right_force(x, y, 0);
             left_wheel_force = left_force(x, y, 0);
             back_wheel_force = back_force(x, y, 0);
-            motor_moving_newboard(left_wheel_force, right_wheel_force, back_wheel_force);
+            motor_moving(left_wheel_force, right_wheel_force, back_wheel_force);
 
 
         }
@@ -279,6 +293,57 @@ namespace omni_3wheels {
 
 
     }
+    export function four_omni_rotation(F_Rwheel: number, F_Lwheel: number, B_Lwheel: number, B_Rwheel: number) {
+        if (F_Rwheel >= 0) {
+            F_Rwheel = Math.min(F_Rwheel, 40)
+            motor.MotorRun(motor.Motors.M2, motor.Dir.CW, pins.map(F_Rwheel, 0, 40, 0, 255))
+        }
+        else {
+            F_Rwheel = Math.max(F_Rwheel, -40)
+            motor.MotorRun(motor.Motors.M2, motor.Dir.CCW, pins.map(F_Rwheel, 0, -40, 0, 255))
+
+        }
+        if (F_Lwheel >= 0) {
+            F_Lwheel = Math.min(F_Lwheel, 40)
+            motor.MotorRun(motor.Motors.M3, motor.Dir.CW, pins.map(F_Lwheel, 0, 40, 0, 255))
+        }
+        else {
+
+            F_Lwheel = Math.max(F_Lwheel, -40)
+            motor.MotorRun(motor.Motors.M3, motor.Dir.CCW, pins.map(F_Lwheel, 0, -40, 0, 255))
+        }
+
+        if (B_Lwheel >= 0) {
+
+            B_Lwheel = Math.min(B_Lwheel, 40)
+            motor.MotorRun(motor.Motors.M4, motor.Dir.CW, pins.map(B_Lwheel, 0, 40, 0, 255))
+        }
+        else {
+            B_Lwheel = Math.max(B_Lwheel, -40)
+            motor.MotorRun(motor.Motors.M4, motor.Dir.CCW, pins.map(B_Lwheel, 0, -40, 0, 255))
+
+
+        }
+        if (B_Rwheel >= 0) {
+
+            B_Rwheel = Math.min(B_Rwheel, 40)
+            motor.MotorRun(motor.Motors.M1, motor.Dir.CW, pins.map(B_Rwheel, 0, 40, 0, 255))
+        }
+        else {
+            B_Rwheel = Math.max(B_Rwheel, -40)
+            motor.MotorRun(motor.Motors.M1, motor.Dir.CCW, pins.map(B_Rwheel, 0, -40, 0, 255))
+
+
+        }
+
+
+
+
+
+
+
+    }
+
 
 
 
@@ -353,5 +418,44 @@ namespace omni_3wheels {
         temp = y * 66 / 100 + rotate * 33 / 100;
         return temp;
 
+    }
+
+
+
+    export function front_left_force(x: number, y: number, rotate: number): number {
+
+        let temp: number;
+        temp = -x * 80 / 100 - y * 80 / 100 + rotate * -35 / 100;
+
+
+        return temp;
+
+    }
+    export function front_right_force(x: number, y: number, rotate: number): number {
+
+        let temp: number;
+
+        temp = x * 80 / 100 - y * 80 / 100 + rotate * 35 / 100;
+
+
+        return temp;
+    }
+    export function back_left_force(x: number, y: number, rotate: number): number {
+
+        let temp: number;
+
+        temp = -x * 80 / 100 + y * 80 / 100 + rotate * 35 / 100;
+
+
+        return temp;
+    }
+    export function back_right_force(x: number, y: number, rotate: number): number {
+
+        let temp: number;
+
+        temp = x * 80 / 100 + y * 80 / 100 + rotate * -35 / 100;
+
+
+        return temp;
     }
 }
